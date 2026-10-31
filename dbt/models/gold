@@ -1,0 +1,10 @@
+{{ config(materialized='table') }}
+
+SELECT
+    underwriting_status,
+    reason_code,
+    COUNT(*) AS application_count,
+    SUM(loan_amount) AS total_loan_amount,
+    AVG(fico_score) AS average_fico_score
+FROM {{ ref('gold_underwriting_decisions') }}
+GROUP BY underwriting_status, reason_code
